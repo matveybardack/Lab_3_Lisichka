@@ -10,17 +10,12 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine($"{HH.gg > HH.cc}");
-            bool [] bb = { true, false };
-
-            Console.WriteLine("A B C Res");
-            foreach (var A in bb)
-                foreach (var B in bb)
-                    foreach (var C in bb)
-                    {
-                        bool i = !(C || B) && A;
-                        Console.WriteLine($"{A} {B} {C} {i}");
-                    }
+            int[] ints = new int[] { 1, 2, 3, 4, 5 };
+            ClassLibraryWhile.PrefixSum prefixSum = new ClassLibraryWhile.PrefixSum();
+            foreach (var (sum, index) in prefixSum.GetPrefixSums(ints))
+            {
+                Console.WriteLine($"Index: {index}, Prefix Sum: {sum}");
+            }
         }
     }
 }
