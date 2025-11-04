@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassLibraryWhile.Resourses;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace ClassLibraryWhile
         private void Step(int[] arr, ref int i, ref int res)
         {
             res += arr[i++];
+            GLOBAL_Trace.Modes["PrefixSum"].Save_Inv(arr.Length, i, res);
+            GLOBAL_Trace.Modes["PrefixSum"].Exit(arr.Length, i, res);
         }
 
         public void Play(int[] arr, ref int i, ref int res)
@@ -38,7 +41,7 @@ namespace ClassLibraryWhile
         {
             int i = 0;
             int res = 0;
-
+            GLOBAL_Trace.Modes["PrefixSum"].Save_Inv(arr.Length, i, res);
             // Инвариант после шага: res = сумма первых j элементов
             // (проверка невычислима напрямую без повторного суммирования; оставляем как комментарий-инвариант)
 
