@@ -22,7 +22,10 @@ namespace ClassLibraryWPCalculator
 
             // Упрощаем выражение
             InequalitySimplifier simplifier = new InequalitySimplifier();
-            weakestPrecondition = simplifier.SimplificateInequality(weakestPrecondition);
+            if (Regex.IsMatch(weakestPrecondition.Trim(), @"^[A-Za-z_]\w*\s*(<=|>=|<|>)"))
+            {
+                weakestPrecondition = simplifier.SimplificateInequality(weakestPrecondition);
+            }
 
             WpTrace.Add(weakestPrecondition);
 
