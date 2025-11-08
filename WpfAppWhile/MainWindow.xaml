@@ -155,6 +155,7 @@
                                  Margin="5"
                                  Height="40"
                                  TextWrapping="Wrap"
+                                 IsReadOnly="True"
                                  VerticalScrollBarVisibility="Auto" />
 
                         <TextBlock Grid.Row="1"
@@ -165,6 +166,7 @@
                                  Grid.Column="1"
                                  Grid.ColumnSpan="2"
                                  Text="{Binding InvariantFormula}"
+                                 IsReadOnly="True"
                                  Margin="5"
                                  Height="25" />
 
