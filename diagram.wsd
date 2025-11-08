@@ -1,0 +1,39 @@
+@startuml Диаграмма классов
+namespace ClassLibraryWhile {
+    class ArrayGenerator <<static>> {
+        + {static} GenerateArray(n: int, min: int, max: int): int[]
+    }
+
+    class PrefixMax {
+        - {const} MinValue: int
+        - Step(arr: int[], i: ref int, res: ref int): void
+        + Play(arr: int[], i: ref int, res: ref int): void
+        + GetPrefixSums(arr: int[]): IEnumerable<(int, int)>
+    }
+
+    class PrefixSum {
+        - Step(arr: int[], i: ref int, res: ref int): void
+        + Play(arr: int[], i: ref int, res: ref int): void
+        + GetPrefixSums(arr: int[]): IEnumerable<(int, int)>
+    }
+}
+
+namespace WpfAppWhile {
+    class App {
+    }
+
+    class MainWindow {
+        + MainWindow()
+    }
+}
+
+WpfAppWhile.App -up-|> System.Windows.Application
+WpfAppWhile.MainWindow -up-|> System.Windows.Window
+
+note "WpfAppWhile.csproj -> ClassLibraryWhile.csproj" as N1
+WpfAppWhile.App .. N1
+WpfAppWhile.MainWindow .. N1
+N1 .. ClassLibraryWhile.ArrayGenerator
+N1 .. ClassLibraryWhile.PrefixMax
+N1 .. ClassLibraryWhile.PrefixSum
+@enduml
