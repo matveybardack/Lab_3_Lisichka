@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ClassLibraryWhile\ClassLibraryWhile.csproj" />
+    <ProjectReference Include="..\ClassLibraryWPCalculator\ClassLibraryWPCalculator.csproj" />
   </ItemGroup>
 
 </Project>
