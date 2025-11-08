@@ -1,12 +1,332 @@
 ﻿<Window x:Class="WpfAppWhile.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfAppWhile"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Проверяльщик корректности циклов"
+        Height="830"
+        Width="1200">
 
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0"
+                   Text="Циклы под микроскопом"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Margin="0,0,0,10" />
+
+        <!-- Основное содержимое -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Левая панель: Данные и управление -->
+            <StackPanel Grid.Column="0">
+                <GroupBox Header="Данные"
+                          Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="Длина массива (n):"
+                                   Margin="0,5" />
+                        <TextBox Text="{Binding ArrayLength, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,2" />
+
+                        <TextBlock Text="Минимум:"
+                                   Margin="0,5" />
+                        <TextBox Text="{Binding MinValue}"
+                                 Margin="0,2" />
+
+                        <TextBlock Text="Максимум:"
+                                   Margin="0,5" />
+                        <TextBox Text="{Binding MaxValue}"
+                                 Margin="0,2" />
+
+                        <Button Content="Сгенерировать массив"
+                                Command="{Binding GenerateArrayCommand}"
+                                Margin="0,10,0,5"
+                                Padding="10,5" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Режимы"
+                          Margin="0,0,0,10">
+                    <StackPanel>
+                        <RadioButton Content="PrefixSum: res = Σ a[i]"
+                                     IsChecked="{Binding IsPrefixSumMode}"
+                                     Margin="0,2" />
+                        <RadioButton Content="PrefixMax: res = max(a[0..j-1])"
+                                     IsChecked="{Binding IsPrefixMaxMode}"
+                                     Margin="0,2" />
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Исполнение">
+                    <StackPanel>
+                        <Button Content="Шаг"
+                                Command="{Binding StepCommand}"
+                                Margin="0,5"
+                                Padding="10,5" />
+                        <Button Content="Пуск"
+                                Command="{Binding RunCommand}"
+                                Margin="0,5"
+                                Padding="10,5" />
+                        <Button Content="Сброс"
+                                Command="{Binding ResetCommand}"
+                                Margin="0,5"
+                                Padding="10,5" />
+
+                        <TextBlock Text="Текущий индекс j:"
+                                   Margin="0,10,0,5" />
+                        <Border Background="{Binding CurrentIndexBackground}"
+                                Padding="5"
+                                CornerRadius="3">
+                            <TextBlock Text="{Binding CurrentIndex}"
+                                       FontWeight="Bold" />
+                        </Border>
+
+                        <TextBlock Text="Результат (res):"
+                                   Margin="0,10,0,5" />
+                        <Border Background="{Binding CurrentResultBackground}"
+                                Padding="5"
+                                CornerRadius="3">
+                            <TextBlock Text="{Binding CurrentResult}"
+                                       FontWeight="Bold" />
+                        </Border>
+
+                        <TextBlock Text="Post-условие:"
+                                   Margin="0,10,0,5" />
+                        <TextBlock Text="{Binding PostCondition}"
+                                   FontStyle="Italic"
+                                   Background="LightGreen"
+                                   Padding="5"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- Разделитель -->
+            <GridSplitter Grid.Column="1"
+                          HorizontalAlignment="Stretch"
+                          Width="3"
+                          Background="Gray" />
+
+            <!-- Правая панель: Верификация -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Инвариант и вариант-функция -->
+                <GroupBox Grid.Row="0"
+                          Header="Инвариант / Вариант-функция">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="Инвариант (словами):"
+                                   Margin="0,5" />
+                        <TextBox Grid.Row="0"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="2"
+                                 Text="{Binding InvariantDescription}"
+                                 Margin="5"
+                                 Height="40"
+                                 TextWrapping="Wrap"
+                                 IsReadOnly="True"
+                                 VerticalScrollBarVisibility="Auto" />
+
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="Инвариант (формула):"
+                                   Margin="0,5" />
+                        <TextBox Grid.Row="1"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="2"
+                                 Text="{Binding InvariantFormula}"
+                                 IsReadOnly="True"
+                                 Margin="5"
+                                 Height="25" />
+
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   Text="Инвариант до шага:"
+                                   Margin="0,5" />
+                        <Border Grid.Row="2"
+                                Grid.Column="1"
+                                Background="{Binding InvariantBeforeColor}"
+                                Margin="5"
+                                Width="20"
+                                Height="20"
+                                CornerRadius="10" />
+                        <TextBlock Grid.Row="2"
+                                   Grid.Column="2"
+                                   Text="{Binding InvariantBeforeStatus}"
+                                   Margin="5,0"
+                                   VerticalAlignment="Center" />
+
+                        <TextBlock Grid.Row="3"
+                                   Grid.Column="0"
+                                   Text="Инвариант после шага:"
+                                   Margin="0,5" />
+                        <Border Grid.Row="3"
+                                Grid.Column="1"
+                                Background="{Binding InvariantAfterColor}"
+                                Margin="5"
+                                Width="20"
+                                Height="20"
+                                CornerRadius="10" />
+                        <TextBlock Grid.Row="3"
+                                   Grid.Column="2"
+                                   Text="{Binding InvariantAfterStatus}"
+                                   Margin="5,0"
+                                   VerticalAlignment="Center" />
+
+                        <TextBlock Grid.Row="4"
+                                   Grid.Column="0"
+                                   Text="Вариант-функция t:"
+                                   Margin="0,5" />
+                        <TextBlock Grid.Row="4"
+                                   Grid.Column="1"
+                                   Text="{Binding VariantFunction}"
+                                   Margin="5"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold" />
+                    </Grid>
+                </GroupBox>
+
+                <!-- Прогресс вариант-функции -->
+                <GroupBox Grid.Row="2"
+                          Header="Монотонность вариант-функции">
+                    <StackPanel Margin="5">
+                        <ProgressBar Minimum="0"
+                                     Maximum="{Binding VariantMax}"
+                                     Value="{Binding VariantCurrent}"
+                                     Height="20"
+                                     Margin="0,5" />
+                        <TextBlock Text="{Binding VariantProgressText}"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Состав массива -->
+                <GroupBox Grid.Row="4"
+                          Header="Состав массива">
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Массив a[i]:"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5" />
+                        <ListBox x:Name="ArrayListBox"
+                                 Height="120"
+                                 ItemsSource="{Binding ArrayItems}"
+                                 SelectedIndex="{Binding SelectedArrayIndex}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding Index}"
+                                                   Foreground="Gray" />
+                                        <Border Grid.Column="1"
+                                                Background="Transparent"
+                                                Padding="2">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsCurrentElement}"
+                                                                     Value="True">
+                                                            <Setter Property="Background"
+                                                                    Value="LightBlue" />
+                                                            <Setter Property="BorderBrush"
+                                                                    Value="DarkBlue" />
+                                                            <Setter Property="BorderThickness"
+                                                                    Value="2" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsModified}"
+                                                                     Value="True">
+                                                            <Setter Property="Background"
+                                                                    Value="LightGreen" />
+                                                            <Setter Property="BorderBrush"
+                                                                    Value="DarkGreen" />
+                                                            <Setter Property="BorderThickness"
+                                                                    Value="2" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                     BorderThickness="0"
+                                                     Background="Transparent" />
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Проверка сохранения через wp -->
+                <GroupBox Grid.Row="6"
+                          Header="Проверка сохранения (wp)">
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Формула:"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5" />
+                        <TextBlock Text="{Binding WPFormula}"
+                                   Background="White"
+                                   Padding="5"
+                                   TextWrapping="Wrap" />
+
+                        <TextBlock Text="Озвучка по-русски:"
+                                   FontWeight="Bold"
+                                   Margin="0,10,0,5" />
+                        <TextBlock Text="{Binding WPRussianDescription}"
+                                   Background="White"
+                                   Padding="5"
+                                   TextWrapping="Wrap"
+                                   FontStyle="Italic"
+                                   Height="80"
+                                   VerticalAlignment="Top"
+                                   ScrollViewer.VerticalScrollBarVisibility="Auto" />
+
+                        <TextBlock Text="Результат проверки:"
+                                   FontWeight="Bold"
+                                   Margin="0,10,0,5" />
+                        <Border Background="{Binding WPResultColor}"
+                                Padding="5"
+                                CornerRadius="3">
+                            <TextBlock Text="{Binding WPResult}"
+                                       FontWeight="Bold"
+                                       HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
