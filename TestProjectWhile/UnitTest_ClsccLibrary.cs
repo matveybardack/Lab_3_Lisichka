@@ -99,6 +99,64 @@ namespace ClassLibraryWhile.Tests
         {
             Assert.True(GLOBAL_Trace.Modes.ContainsKey("PrefixSum"));
             Assert.True(GLOBAL_Trace.Modes.ContainsKey("PrefixMax"));
+         class QuantifierFlowTests
+        {
+            [Fact(DisplayName = "UI_Flow: Корректное определение типа квантора и вызов сервиса для ∃")]
+            public void BuildGraphButton_QuantifierFlow_ShouldCallEvaluateQuantifiedStatement()
+            {
+                // ACT: Имитируем входные данные
+                string formulaInput = "∃x (x > 0)";
+                double minInput = -2.0;
+                double maxInput = 2.0;
+                double stepInput = 1.0;
+
+                // SETUP: Создаем заглушки
+                var parserManager = new ParserManager();
+                var plotService = new PlotPredicateService();
+
+                // ИМИТАЦИЯ ЛОГИКИ ИЗ BuildGraphButton_Click
+
+                // 1. Валидация ввода (Предполагаем, что она успешна)
+                string formula = formulaInput;
+                double min = minInput;
+                double max = maxInput;
+                double step = stepInput;
+
+                // 2. Вызов Сервиса Парсера
+                bool hasQuantifiers = parserManager.HasQuantifiers(formula); // true
+                string ncalcText = parserManager.NormalizeToNCalc(formula); // "(x > 0)"
+
+                // 3. Создание предиката
+                // NCalcExpression в Predicate создается из ncalcText
+                var ncalcExpr = new NCalc.Expression(ncalcText);
+                var predicate = new Predicate(ncalcExpr, hasQuantifiers);
+
+                // 4. Логика обработки кванторов
+                if (hasQuantifiers)
+                {
+                    // ИСПОЛЬЗУЕМ ПРОГРАММНЫЙ ИНТЕРФЕЙС ДЛЯ ПОЛУЧЕНИЯ ТИПА КВАНТОРА:
+                    PredicateAnalyzer.QuantifierEvaluationType quantifierEnum =
+                        parserManager.GetQuantifierType(formula); // Existential
+
+                    // ВЫЗОВ СЕРВИСА (Здесь мы проверяем, что вызов произошел, 
+                    // и что мок вернул ожидаемый результат)
+                    bool isTrue = plotService.EvaluateQuantifiedStatement(
+                        predicate,
+                        quantifierEnum,
+                        min, max, step); // true
+
+                    // ASSERT: Проверяем, что все сработало как ожидалось
+                    Xunit.Assert.True(hasQuantifiers);
+                    Xunit.Assert.Equal("(x > 0)", ncalcText);
+                    Xunit.Assert.Equal(PredicateAnalyzer.QuantifierEvaluationType.Existential, quantifierEnum);
+                    Xunit.Assert.True(isTrue); // Проверяем, что сервис вернул True
+                }
+                else
+                {
+                    Xunit.Assert.True(false, "Тест не должен попасть в ветку без кванторов.");
+                }
+            }
         }
     }
+}
 }

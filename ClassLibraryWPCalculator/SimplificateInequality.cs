@@ -82,5 +82,7 @@ namespace ClassLibraryWPCalculator
                 throw new InvalidOperationException("Ошибка вычисления выражения: " + expr, ex);
             }
         }
+
+
     }
 }
