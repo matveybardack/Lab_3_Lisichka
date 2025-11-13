@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
 using ClassLibraryWPCalculator;
+using ClassLibraryWhile;
 
 namespace WpfAppWhile
 {
@@ -168,12 +169,12 @@ namespace WpfAppWhile
             {
                 if (ArrayLength <= 0)
                 {
-                    StatusMessage = "Длина массива должна быть больше 0";
+                    MessageBox.Show("Длина массива должна быть больше 0", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     OnPropertyChanged(nameof(StatusMessage));
                     return;
                 }
 
-                _array = CreateTestArray(ArrayLength, MinValue, MaxValue);
+                _array = ArrayGenerator.GenerateArray(ArrayLength, MinValue, MaxValue);
                 _isArrayCreated = true;
                 UpdateArrayItems();
                 ResetExecution();
@@ -185,20 +186,6 @@ namespace WpfAppWhile
                 StatusMessage = $"Ошибка создания массива: {ex.Message}";
                 OnPropertyChanged(nameof(StatusMessage));
             }
-        }
-
-        /// <summary>
-        /// Создание тестового массива со случайными значениями
-        /// </summary>
-        private int[] CreateTestArray(int length, int min, int max)
-        {
-            Random rnd = new Random();
-            int[] array = new int[length];
-            for (int i = 0; i < length; i++)
-            {
-                array[i] = rnd.Next(min, max + 1);
-            }
-            return array;
         }
 
         /// <summary>
