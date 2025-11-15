@@ -38,6 +38,7 @@ namespace WpfAppWhile
             StepCommand = new RelayCommand(_ => ExecuteStep(), _ => CanExecuteStep());
             RunCommand = new RelayCommand(_ => ExecuteRun(), _ => CanExecuteStep());
             ResetCommand = new RelayCommand(_ => ResetExecution());
+            ShowHelpCommand = new RelayCommand(_ => ShowHelpWindow());
 
             IsPrefixSumMode = true;
             UpdateMode();
@@ -51,6 +52,7 @@ namespace WpfAppWhile
         public ICommand StepCommand { get; }
         public ICommand RunCommand { get; }
         public ICommand ResetCommand { get; }
+        public ICommand ShowHelpCommand { get; }
 
         /// <summary>
         /// Проверка возможности выполнения шага алгоритма
@@ -660,6 +662,15 @@ namespace WpfAppWhile
             }
         }
 
+        // Метод для показа окна справки
+        private void ShowHelpWindow()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var helpWindow = new HelpWindow();
+                helpWindow.ShowDialog();
+            });
+        }
     }
 
     /// <summary>

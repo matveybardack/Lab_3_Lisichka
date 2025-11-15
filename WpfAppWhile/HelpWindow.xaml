@@ -1,0 +1,222 @@
+﻿<Window x:Class="WpfAppWhile.HelpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Справка - Проверяльщик корректности циклов"
+        Height="600"
+        Width="700"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResizeWithGrip">
+
+    <Window.Resources>
+        <Style x:Key="HeaderStyle"
+               TargetType="TextBlock">
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="FontSize"
+                    Value="14" />
+            <Setter Property="Foreground"
+                    Value="#2C3E50" />
+            <Setter Property="Margin"
+                    Value="0,15,0,5" />
+        </Style>
+
+        <Style x:Key="SubHeaderStyle"
+               TargetType="TextBlock">
+            <Setter Property="FontWeight"
+                    Value="SemiBold" />
+            <Setter Property="Foreground"
+                    Value="#34495E" />
+            <Setter Property="Margin"
+                    Value="0,10,0,3" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0"
+                   Text="Справка по работе с программой"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Foreground="#2C3E50"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,15" />
+
+        <!-- Основное содержимое справки -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Общее описание -->
+                <TextBlock Text="Общее описание программы"
+                           Style="{StaticResource HeaderStyle}" />
+                <TextBlock TextWrapping="Wrap"
+                           Margin="0,0,0,10">
+                    Данная программа демонстрирует работу циклов с верификацией их корректности. 
+                    Программа позволяет наблюдать выполнение алгоритма пошагово и проверять формальные условия корректности.
+                </TextBlock>
+
+                <!-- Создание массива -->
+                <TextBlock Text="1. Создание массива"
+                           Style="{StaticResource HeaderStyle}" />
+
+                <TextBlock Text="Параметры массива"
+                           Style="{StaticResource SubHeaderStyle}" />
+                <StackPanel Margin="15,0,0,10">
+                    <TextBlock Text="• Длина массива (n): количество элементов в массиве"
+                               Margin="0,2" />
+                    <TextBlock Text="• Минимум: минимальное значение элементов"
+                               Margin="0,2" />
+                    <TextBlock Text="• Максимум: максимальное значение элементов"
+                               Margin="0,2" />
+                    <TextBlock Text="• Кнопка 'Сгенерировать массив' для создания"
+                               Margin="0,2" />
+                </StackPanel>
+
+                <!-- Режимы работы -->
+                <TextBlock Text="2. Режимы работы"
+                           Style="{StaticResource HeaderStyle}" />
+
+                <TextBlock Text="PrefixSum - Сумма префикса"
+                           Style="{StaticResource SubHeaderStyle}" />
+                <TextBlock Text="Вычисляет сумму элементов массива от начала до текущей позиции:"
+                           Margin="15,0,0,5"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="res = a[0] + a[1] + ... + a[j-1]"
+                           FontFamily="Courier New"
+                           Margin="25,0,0,10" />
+
+                <TextBlock Text="PrefixMax - Максимум префикса"
+                           Style="{StaticResource SubHeaderStyle}" />
+                <TextBlock Text="Находит максимальный элемент среди обработанных элементов:"
+                           Margin="15,0,0,5"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="res = max(a[0], a[1], ..., a[j-1])"
+                           FontFamily="Courier New"
+                           Margin="25,0,0,10" />
+
+                <!-- Управление выполнением -->
+                <TextBlock Text="3. Управление выполнением"
+                           Style="{StaticResource HeaderStyle}" />
+
+                <StackPanel Margin="15,0,0,10">
+                    <TextBlock Text="• Шаг: выполнить одну итерацию цикла"
+                               Margin="0,2" />
+                    <TextBlock Text="• Пуск: автоматическое выполнение всех итераций"
+                               Margin="0,2" />
+                    <TextBlock Text="• Сброс: вернуться к начальному состоянию"
+                               Margin="0,2" />
+                </StackPanel>
+
+                <!-- Верификация -->
+                <TextBlock Text="4. Верификация корректности"
+                           Style="{StaticResource HeaderStyle}" />
+
+                <TextBlock Text="Инвариант цикла"
+                           Style="{StaticResource SubHeaderStyle}" />
+                <TextBlock Text="Условие, которое сохраняется перед каждой итерацией цикла. Гарантирует, что алгоритм работает правильно на каждом шаге."
+                           Margin="15,0,0,5"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Вариант-функция"
+                           Style="{StaticResource SubHeaderStyle}" />
+                <TextBlock Text="Функция, которая гарантирует завершение цикла. Должна монотонно убывать и быть ограниченной снизу."
+                           Margin="15,0,0,5"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Weakest Precondition (WP)"
+                           Style="{StaticResource SubHeaderStyle}" />
+                <TextBlock Text="Формальная проверка того, что инвариант сохраняется после выполнения тела цикла."
+                           Margin="15,0,0,5"
+                           TextWrapping="Wrap" />
+
+                <!-- Визуальные обозначения -->
+                <TextBlock Text="5. Визуальные обозначения"
+                           Style="{StaticResource HeaderStyle}" />
+
+                <StackPanel Margin="15,0,0,10">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,3">
+                        <Border Width="16"
+                                Height="16"
+                                Background="LightBlue"
+                                BorderBrush="DarkBlue"
+                                BorderThickness="1"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Текущий обрабатываемый элемент массива"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,3">
+                        <Border Width="16"
+                                Height="16"
+                                Background="LightGreen"
+                                BorderBrush="DarkGreen"
+                                BorderThickness="1"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Элемент, который изменил результат"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,3">
+                        <Border Width="16"
+                                Height="16"
+                                Background="LightYellow"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Текущий индекс (j)"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,3">
+                        <Border Width="16"
+                                Height="16"
+                                Background="LightCyan"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Текущий результат (res)"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,3">
+                        <Border Width="16"
+                                Height="16"
+                                Background="Green"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Условие выполняется"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,3">
+                        <Border Width="16"
+                                Height="16"
+                                Background="Red"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center" />
+                        <TextBlock Text="Условие нарушено"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Пост-условие -->
+                <TextBlock Text="6. Пост-условие"
+                           Style="{StaticResource HeaderStyle}" />
+                <TextBlock Text="Условие, которое выполняется после завершения цикла. Показывает конечный результат работы алгоритма."
+                           Margin="0,0,0,10"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

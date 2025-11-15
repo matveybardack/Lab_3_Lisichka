@@ -107,6 +107,14 @@
                                    TextWrapping="Wrap" />
                     </StackPanel>
                 </GroupBox>
+                <!-- Кнопка справки -->
+                <Button Content="Справка"
+                        Command="{Binding ShowHelpCommand}"
+                        Margin="10,10,0,5"
+                        Padding="10,5"
+                        Background="#FFD4F0F9"
+                        ToolTip="Открыть справку по работе с программой"
+                        HorizontalAlignment="Center" />
             </StackPanel>
 
             <!-- Разделитель -->
